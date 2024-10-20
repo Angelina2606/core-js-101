@@ -128,8 +128,24 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const a = {
+    left: rect1.left,
+    top: rect1.top,
+    right: rect1.left + rect1.width,
+    bottom: rect1.top + rect1.height,
+  };
+
+  const b = {
+    left: rect2.left,
+    top: rect2.top,
+    right: rect2.left + rect2.width,
+    bottom: rect2.top + rect2.height,
+  };
+  if (a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -159,8 +175,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const dx = point.x - circle.center.x;
+  const dy = point.y - circle.center.y;
+  return (dx ** 2 + dy ** 2) < (circle.radius ** 2);
 }
 
 
@@ -175,8 +193,16 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const charCount = Array.from(str)
+    .filter((char) => char !== ' ')
+    .reduce((acc, char) => {
+      acc[char] = (acc[char] || 0) + 1;
+      return acc;
+    }, {});
+
+  return Array.from(str)
+    .find((char) => char !== ' ' && charCount[char] === 1) || null;
 }
 
 
@@ -202,8 +228,26 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let result;
+  let c = a;
+  let d = b;
+  if (a > b) {
+    c = b;
+    d = a;
+  }
+  if (isStartIncluded) {
+    result = `[${c}, `;
+  } else {
+    result = `(${c}, `;
+  }
+
+  if (isEndIncluded) {
+    result += `${d}]`;
+  } else {
+    result += `${d})`;
+  }
+  return result;
 }
 
 
